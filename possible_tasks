@@ -1,0 +1,52 @@
+====================================
+Taskuri usoare:
+====================================
+
+1*. implementarea mai multor functii de activare (si a derivatelor lor) ... aici ar fi bine sa se pastreze numele functiilor de forma "act_func_"+numele functiei (ex: "act_func_sigmoid") iar la derivata sa fie "deriv_"+numele functieie (ex: "deriv_sigmoid") .... pe net sau la rn la curs se gasesc mai multe (RELU, care are si el mai multe variante, etc.)
+
+2*. ca 1* doar ca pentru functii de cost (de fapt aici se pune derivata functiilor de cost dar eu le-am zis doar functii de cost ca sa nu lungesc numele functiilor... deci cand veti implementa functiile implementati functii care returneaza derivata functiei de cost pe care vreti sa o puneti) .... aici la fel ar fi bine sa se pastreze: "cost_"+numele functiei de cost (ex: "cost_cross_entropy") .... mai trebuie MSE (min squared error) si de pe net eventual altele
+
+3*. sa se adauge cumva sa fie mai flexibila metoda cu train_test_split de la "load_dataset" din NeuralNetwork (adica sa poti tu sa selectezi cat la suta train si cat la suta test ... momentan am pus fixat (70% test si 30% train) ca sa nu umplu cu parametri (si nici nu era relevant la ce schimbari faceam))
+
+
+====================================
+Taskuri medii:
+====================================
+
+1**. implementare learning rate adaptiv (in asa fel incat sa fie mai multe variante de learning rate adaptiv sau daca este posibil sa puna utilizatorul o functie care sa schimbe learning rate-ul la fiecare iteratie - dar asta e mai greu pentru ca tot ar fi o limitare la structura parametrilor functiei de dat ca parametru ... sau daca aveti o idee mai buna e perfect) ---- in functia fit din clasa NeuralNetwork din kastor_framework.py
+
+2**. implementare metode de initializare a weighturilor (mai multe ... asta pusa de mine e aia de la tema de la rn si mi se pare ca se cheama "lecun" sau ceva de genul in keras ... e posibil sa ma insel) .. in init_methods mai jos se pot scrie altele si dupa se adauga mai sus in alea doua functii (pt bias si pt weights) si dati nume sugestiv pentru a fi folosite (de ex la asta eu i-am spus "normal" pt ca foloseste distributia normala in spate... darputem redenumi dupa mai clar daca sunt probleme ... nu e greu) ..... pe net se gasesc alte metode de initializare de genul
+
+
+====================================
+Taskuri mai grele:
+====================================
+
+1***. implementare metoda de crossvalidare (cvloo si/sau k-fold ... ca la ML nu e chiar asa greu de facut) sau o metoda de a valida mai multe modele (retele neuronale) - mai exact de a imparte datasetul dat in set de train, unul de validare si unul de testare; astfel dupa antrenarea mai multor retele neuronale pe trainset (cum zice in cerinta de exemplu cu alea 3 variante de bkp) sa se valideze pe validset (adica sa se faca testing pe validset si sa se aleaga modelul cu cea mai buna acuratete) si apoi sa se calculeze acuratetea pe testset (pe care doar se testeaza acuratetea si aceasta va fi teoretic cea mai buna...)
+
+2***. de adaugat RMS-prop
+
+3***. de adaugat Dropout (asta trebuie obligatoriu implementat pentru ca zice de el in cerinta : "oprire")
+
+4***. de implementat ADAM (Adaptive momentum ... e si in curs la rn)
+
+5***. de implementat Adagrad
+
+6***. de implementat momentum cu Nesterov Accelerated Gradient (ala clasic e deja implementat)
+
+7***. de implementat Adadelta
+
+8***. de implementat L1 regularizare (L2 e deja pus)
+
+9***. de implementat Maxnorm (curs 5 la RN - sau pe net)
+
+10***. de implementat orice alt optimizator pentru retele neuronale (de la 2*** la 10*** sunt mai grele pentru ca implica si intelegerea macar partiala a codului existent)
+
+
+====================================
+Taskuri hardcore (veteran de razboi dupa 3 ani in Vietnam, 4 in Afganistan si 2 ani la FII):
+====================================
+
+1****************. Sa incercati sa intelegeti cum merge BKP-ul pus de mine si Feedforward (sau alte chestii care mai sunt implementate pe aici) :))))))))))))
+2****************. Sa incercati sa testati pe datele din cerinta (dupa ce intelegeti cum merge treaba) cu comentariile de pe facebook (asta voiam sa o fac eu dar sapt viitoare abia, dupa revelion cred)
+3****************. Sa faceti o metoda de generare de date in plus, pentru a creste datasetul (asta nu am nicio idee cum s-ar face am vazut in curs 5 la rn si pe net ca se poate dar nu stiu cum ... prea multe variabile :))) )
