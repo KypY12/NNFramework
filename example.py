@@ -33,10 +33,8 @@ for index in range(0, len(actual_values_not_processed)):
 
 model = kt.NeuralNetwork()
 
-model.add_hidden_layer(activation_funct=kt.act_func_sigmoid, activation_deriv=kt.deriv_sigmoid, neurons_count=40)
-model.add_hidden_layer(activation_funct=kt.act_func_sigmoid, activation_deriv=kt.deriv_sigmoid, neurons_count=30)
-model.add_hidden_layer(activation_funct=kt.act_func_sigmoid, activation_deriv=kt.deriv_sigmoid, neurons_count=20)
-model.add_hidden_layer(activation_funct=kt.act_func_sigmoid, activation_deriv=kt.deriv_sigmoid, neurons_count=15)
+model.add_hidden_layer(activation_funct=kt.act_func_sigmoid, activation_deriv=kt.deriv_sigmoid, neurons_count=50)
+model.add_hidden_layer(activation_funct=kt.act_func_sigmoid, activation_deriv=kt.deriv_sigmoid, neurons_count=50)
 model.add_last_layer(activation_funct=kt.act_func_softmax, cost_funct_deriv=kt.cost_cross_entropy, neurons_count=10)
 
 model.init_components(input_layer_size=784, weight_init_name="normal", bias_init_name="normal")
