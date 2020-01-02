@@ -44,6 +44,8 @@ Taskuri mai grele:
 
 11***. de implementat o metoda de predict (adica eu pun o instanta la parametri si el imi prezice - deci face un feedforward prin retea - ce valoare trebuie sa imi prezica)
 
+12***. o metoda de serialiare a modelului (si/sau doar a weight-urilor si bias-ului)
+
 ====================================
 Taskuri hardcore (veteran de razboi dupa 3 ani in Vietnam, 4 in Afganistan si 2 ani la FII):
 ====================================
