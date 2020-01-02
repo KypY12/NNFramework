@@ -9,13 +9,12 @@ def train_network(instances, actual_values,
                   w_matrices, b_matrices, act_matrices,
                   momentum_friction=-1,
                   l2_lambda=0.0):
-
     count = 0
     m_matrices = []
     if momentum_friction != -1:
         m_matrices = create_momentum_matrices(w_matrices)
 
-    for instance, actual_value in tqdm(zip(instances, actual_values), position=1):
+    for instance, actual_value in zip(instances, actual_values):
         x = np.array([instance]).transpose()
         act_matrices = feedforward(w_matrices, b_matrices, x, act_matrices)
         t = actual_value

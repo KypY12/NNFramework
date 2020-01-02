@@ -42,11 +42,15 @@ Taskuri mai grele:
 
 10***. de implementat orice alt optimizator pentru retele neuronale (de la 2*** la 10*** sunt mai grele pentru ca implica si intelegerea macar partiala a codului existent)
 
+11***. de implementat o metoda de predict (adica eu pun o instanta la parametri si el imi prezice - deci face un feedforward prin retea - ce valoare trebuie sa imi prezica)
 
 ====================================
 Taskuri hardcore (veteran de razboi dupa 3 ani in Vietnam, 4 in Afganistan si 2 ani la FII):
 ====================================
 
 1****************. Sa incercati sa intelegeti cum merge BKP-ul pus de mine si Feedforward (sau alte chestii care mai sunt implementate pe aici) :))))))))))))
+
+-------------------- Partial realizat (2****************)
 2****************. Sa incercati sa testati pe datele din cerinta (dupa ce intelegeti cum merge treaba) cu comentariile de pe facebook (asta voiam sa o fac eu dar sapt viitoare abia, dupa revelion cred)
+
 3****************. Sa faceti o metoda de generare de date in plus, pentru a creste datasetul (asta nu am nicio idee cum s-ar face am vazut in curs 5 la rn si pe net ca se poate dar nu stiu cum ... prea multe variabile :))) )

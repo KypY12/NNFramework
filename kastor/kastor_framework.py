@@ -61,7 +61,18 @@ class NeuralNetwork:
         init_weights(weight_init_name, self.weight_matrices, input_layer_size)
         init_bias(bias_init_name, self.bias_matrices, input_layer_size)
 
+    def normalize_data(self, data_set):
+        for data_index in range(0, len(data_set)):
+            data_min = np.min(data_set[data_index][0])
+            data_max = np.max(data_set[data_index][0])
+            data_diff = data_max - data_min
+            for data_elem_index in range(0, len(data_set[data_index][0])):
+                data_set[data_index][0][data_elem_index] = ((data_set[data_index][0][data_elem_index] - data_min)/data_diff) - 1
+
+        return data_set
+
     def load_dataset(self, data_set, cross_valid_method):
+        # data_set = self.normalize_data(data_set)
         if cross_valid_method == "train_test_split":
             data = data_set
             shuffle(data)
@@ -83,11 +94,12 @@ class NeuralNetwork:
         test_actual_values = list(test_data[1])
 
         for it in tqdm(range(0, count_iterations), position=0):
-            train_network(instances, actual_values,
-                          learning_rate, batch_size,
-                          self.weight_matrices, self.bias_matrices, self.hidden_and_output,
-                          momentum_friction,  # pentru momentum
-                          l2_lambda)  # pentru L2 reg
+            self.weight_matrices, self.bias_matrices = train_network(instances, actual_values,
+                                                                     learning_rate, batch_size,
+                                                                     self.weight_matrices, self.bias_matrices,
+                                                                     self.hidden_and_output,
+                                                                     momentum_friction,  # pentru momentum
+                                                                     l2_lambda)  # pentru L2 reg
 
             # Aici in for se poate implementa o metoda pentru learning rate adaptiv
             # ex extrem de simplu: lr = lr / 2 (dar fixat neaparat)
@@ -96,6 +108,6 @@ class NeuralNetwork:
                 # Aici asa am dat eu pentru o vizualizare a rezultatelor (nu va ramane neaparat asa)
                 result_1 = test_network(test_instances, test_actual_values,
                                         self.weight_matrices, self.bias_matrices, self.hidden_and_output,
-                                        use_one_hot=True)
+                                        use_one_hot=False)
                 print("--- Epoch " + str(it) + " ---")
                 print("| Result test : " + str(result_1) + " |")
