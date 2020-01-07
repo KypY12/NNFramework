@@ -13,8 +13,8 @@ def act_func_sigmoid(z):
     # return np.array([[1 / (1 + np.exp(-i[0]))] for i in z])
 
 
-def deriv_sigmoid(y_l):
-    return y_l * (1 - y_l)
+def deriv_sigmoid(y_prev):
+    return y_prev * (1 - y_prev)
 
 
 # Softmax
@@ -23,3 +23,23 @@ def act_func_softmax(z):
     aux = np.max(z)
     exp_val = np.exp(z-aux)
     return exp_val / np.sum(exp_val)
+
+# trebuie derivata la softmax
+
+
+# Linear
+
+def act_funct_linear(z):
+    return z
+
+
+# Relu
+
+
+def act_funct_relu(z):
+    return np.array([[i[0]] if i[0] > 0 else [0] for i in z])
+
+
+def deriv_relu(y_prev):
+    return np.array([[1] if i > 0 else [0] for i in y_prev])
+

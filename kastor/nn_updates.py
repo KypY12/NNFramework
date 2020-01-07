@@ -30,7 +30,7 @@ def update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr, prev_moment
     for matrix_index in range(0, len(b_matrices)):
         b_matrices[matrix_index] -= (lr * gradients_b[matrix_index])
 
-    return current_momentum
+    return w_matrices, b_matrices, current_momentum
 
 
 def add_gradients_batch(old_gradients_w, old_gradients_b, new_gradients_w, new_gradients_b):
@@ -40,6 +40,8 @@ def add_gradients_batch(old_gradients_w, old_gradients_b, new_gradients_w, new_g
     for index in range(0, len(old_gradients_b)):
         old_gradients_b[index] = old_gradients_b[index] + new_gradients_b[index]
 
+    return old_gradients_w, old_gradients_b
+
 
 def prepare_gradients(gradients_w, gradients_b, batch_len):
     for index in range(0, len(gradients_w)):
@@ -47,3 +49,5 @@ def prepare_gradients(gradients_w, gradients_b, batch_len):
 
     for index in range(0, len(gradients_b)):
         gradients_b[index] = gradients_b[index] / batch_len
+
+    return gradients_w, gradients_b

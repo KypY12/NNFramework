@@ -26,7 +26,7 @@ Taskuri mai grele:
 
 2***. de adaugat RMS-prop
 
-3***. de adaugat Dropout (asta trebuie obligatoriu implementat pentru ca zice de el in cerinta : "oprire")
+3***. de adaugat Dropout
 
 4***. de implementat ADAM (Adaptive momentum ... e si in curs la rn)
 

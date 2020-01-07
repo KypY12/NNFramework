@@ -14,6 +14,8 @@ def train_network(instances, actual_values,
     if momentum_friction != -1:
         m_matrices = create_momentum_matrices(w_matrices)
 
+
+    # Iteratiile antrenamentului incep aici
     for instance, actual_value in zip(instances, actual_values):
         x = np.array([instance]).transpose()
         act_matrices = feedforward(w_matrices, b_matrices, x, act_matrices)
@@ -25,23 +27,24 @@ def train_network(instances, actual_values,
         if batch_size == 0 or batch_size == 1:
             # Online training
             gradients_w, gradients_b = back_propagation(temp, w_matrices, t)
-            m_matrices = update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
-                                    m_matrices, momentum_friction,  # pentru momentum
-                                    l2_lambda, len(instances)       # pentru L2 regularizare
-                                    )
+            w_matrices, b_matrices, m_matrices = update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
+                                                            m_matrices, momentum_friction,  # pentru momentum
+                                                            l2_lambda, len(instances)  # pentru L2 regularizare
+                                                            )
         else:
             if count % batch_size == 0:
                 gradients_w, gradients_b = back_propagation(temp, w_matrices, t)
             else:
                 new_gradients_w, new_gradients_b = back_propagation(temp, w_matrices, t)
-                add_gradients_batch(gradients_w, gradients_b, new_gradients_w, new_gradients_b)
+                gradients_w, gradients_b = add_gradients_batch(gradients_w, gradients_b, new_gradients_w,
+                                                               new_gradients_b)
 
-            if (count+1) % batch_size == 0:
-                prepare_gradients(gradients_w, gradients_b, batch_size)
-                m_matrices = update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
-                                        m_matrices, momentum_friction,  # pentru momentum
-                                        l2_lambda, batch_size           # pentru L2 regularizare
-                                        )
+            if (count + 1) % batch_size == 0:
+                gradients_w, gradients_b = prepare_gradients(gradients_w, gradients_b, batch_size)
+                w_matrices, b_matrices, m_matrices = update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
+                                                                m_matrices, momentum_friction,  # pentru momentum
+                                                                l2_lambda, batch_size  # pentru L2 regularizare
+                                                                )
         count += 1
 
     return w_matrices, b_matrices

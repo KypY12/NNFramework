@@ -20,8 +20,11 @@ def is_equal(a, b):
             return False
     return True
 
+
 # def is_equal(a, b):
 #     for index in range(0, len(a)):
 #         if a[index] != b[index]:
 #             return False
 #     return True
+
+

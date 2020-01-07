@@ -6,13 +6,16 @@ from kastor.cost_functions import *
 from kastor.init_methods import *
 from kastor.nn_test import test_network
 from kastor.nn_train import train_network
+from kastor.variable_learning_rate import none
 
 
 class NeuralNetwork:
 
     def __init__(self):
         self.activation_functions_list = []
+        # Derivatele
         self.functions_for_errors = []
+        # Dimensiunile straturilor ascunse
         self.hidden_sizes_list = []
         self.last_layer_size = 0
 
@@ -67,12 +70,15 @@ class NeuralNetwork:
             data_max = np.max(data_set[data_index][0])
             data_diff = data_max - data_min
             for data_elem_index in range(0, len(data_set[data_index][0])):
-                data_set[data_index][0][data_elem_index] = ((data_set[data_index][0][data_elem_index] - data_min)/data_diff) - 1
+                data_set[data_index][0][data_elem_index] = ((data_set[data_index][0][
+                                                                 data_elem_index] - data_min) / data_diff) - 1
 
         return data_set
 
     def load_dataset(self, data_set, cross_valid_method):
-        # data_set = self.normalize_data(data_set)
+
+        data_set = self.normalize_data(data_set)
+
         if cross_valid_method == "train_test_split":
             data = data_set
             shuffle(data)
@@ -80,34 +86,41 @@ class NeuralNetwork:
 
             # 70% train si 30% test
             split_index = int(data_len * 0.7)
+            self.train_set = data_set
+            self.test_set = data_set
+            # self.train_set = data[:split_index]
+            # self.test_set = data[split_index:]
 
-            self.train_set = data[:split_index]
-            self.test_set = data[split_index:]
-
-    def fit(self, count_iterations, learning_rate, batch_size, show_acc=False, momentum_friction=-1, l2_lambda=0.0):
+    def fit(self, count_iterations, learning_rate, batch_size, show_acc=False, variable_lr_funct=none, momentum_friction=-1, l2_lambda=0.0):
         data = list(zip(*self.train_set))
         instances = list(data[0])
         actual_values = list(data[1])
+        print(actual_values[0])
 
         test_data = list(zip(*self.test_set))
         test_instances = list(test_data[0])
         test_actual_values = list(test_data[1])
 
         for it in tqdm(range(0, count_iterations), position=0):
+            # Actual_values = target (valorile target)
             self.weight_matrices, self.bias_matrices = train_network(instances, actual_values,
                                                                      learning_rate, batch_size,
                                                                      self.weight_matrices, self.bias_matrices,
                                                                      self.hidden_and_output,
                                                                      momentum_friction,  # pentru momentum
                                                                      l2_lambda)  # pentru L2 reg
+            # print(self.weight_matrices)
+            # print(self.bias_matrices)
 
             # Aici in for se poate implementa o metoda pentru learning rate adaptiv
             # ex extrem de simplu: lr = lr / 2 (dar fixat neaparat)
+            lr = variable_lr_funct(lr=lr)
 
             if show_acc:
                 # Aici asa am dat eu pentru o vizualizare a rezultatelor (nu va ramane neaparat asa)
-                result_1 = test_network(test_instances, test_actual_values,
-                                        self.weight_matrices, self.bias_matrices, self.hidden_and_output,
-                                        use_one_hot=False)
+                accuracy, cost = test_network(test_instances, test_actual_values,
+                                              self.weight_matrices, self.bias_matrices, self.hidden_and_output,
+                                              use_one_hot=False)
                 print("--- Epoch " + str(it) + " ---")
-                print("| Result test : " + str(result_1) + " |")
+                print("| Accuracy test : " + str(accuracy) + " |")
+                print("| Cost test : " + str(cost) + " |")
