@@ -8,12 +8,18 @@ def train_network(instances, actual_values,
                   lr, batch_size,
                   w_matrices, b_matrices, act_matrices,
                   momentum_friction=-1,
-                  l2_lambda=0.0):
+                  l2_lambda=0.0,
+                  RMSprop_parameter=-1):
     count = 0
     m_matrices = []
+    previous_gradients = []
     if momentum_friction != -1:
         m_matrices = create_momentum_matrices(w_matrices)
 
+    if RMSprop_parameter != -1:
+        previous_gradients = create_momentum_matrices(w_matrices) # initializarea matricilor e la fel pentru RMSprop
+        # for matrice in w_matrices:
+        #     previous_gradients.append(np.zeros(matrice.shape))
 
     # Iteratiile antrenamentului incep aici
     for instance, actual_value in zip(instances, actual_values):
@@ -28,7 +34,9 @@ def train_network(instances, actual_values,
             # Online training
             gradients_w, gradients_b = back_propagation(temp, w_matrices, t)
             w_matrices, b_matrices, m_matrices = update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
+                                                            count, #pentru Adam
                                                             m_matrices, momentum_friction,  # pentru momentum
+                                                            previous_gradients, RMSprop_parameter, #pentru RMS Prop
                                                             l2_lambda, len(instances)  # pentru L2 regularizare
                                                             )
         else:
@@ -42,9 +50,14 @@ def train_network(instances, actual_values,
             if (count + 1) % batch_size == 0:
                 gradients_w, gradients_b = prepare_gradients(gradients_w, gradients_b, batch_size)
                 w_matrices, b_matrices, m_matrices = update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
+                                                                count, #pentru Adam
                                                                 m_matrices, momentum_friction,  # pentru momentum
+                                                                previous_gradients, RMSprop_parameter, #pentru RMS Prop
                                                                 l2_lambda, batch_size  # pentru L2 regularizare
                                                                 )
+        
+
+
         count += 1
 
     return w_matrices, b_matrices
