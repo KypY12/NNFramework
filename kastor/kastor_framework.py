@@ -91,7 +91,7 @@ class NeuralNetwork:
             # self.train_set = data[:split_index]
             # self.test_set = data[split_index:]
 
-    def fit(self, count_iterations, learning_rate, batch_size, show_acc=False, variable_lr_funct=none, momentum_friction=-1, l2_lambda=0.0):
+    def fit(self, count_iterations, learning_rate, batch_size, show_acc=False, variable_lr_funct=none, momentum_friction=-1, l2_lambda=0.0, RMSprop_paramater = -1):
         data = list(zip(*self.train_set))
         instances = list(data[0])
         actual_values = list(data[1])
@@ -108,13 +108,14 @@ class NeuralNetwork:
                                                                      self.weight_matrices, self.bias_matrices,
                                                                      self.hidden_and_output,
                                                                      momentum_friction,  # pentru momentum
-                                                                     l2_lambda)  # pentru L2 reg
+                                                                     l2_lambda,  # pentru L2 reg
+                                                                     RMSprop_paramater) #pentru RMS Prop
             # print(self.weight_matrices)
             # print(self.bias_matrices)
 
             # Aici in for se poate implementa o metoda pentru learning rate adaptiv
             # ex extrem de simplu: lr = lr / 2 (dar fixat neaparat)
-            lr = variable_lr_funct(lr=lr)
+            lr = variable_lr_funct(lr=learning_rate)
 
             if show_acc:
                 # Aici asa am dat eu pentru o vizualizare a rezultatelor (nu va ramane neaparat asa)
