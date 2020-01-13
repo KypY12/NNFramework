@@ -37,5 +37,9 @@ def create_bias_matrices(size_list, output_layer_size):
     return biases_matrices
 
 
-def create_momentum_matrices(w_matrices):
+def create_w_like_matrices(w_matrices):
     return [np.zeros(w_matrices[matrix_index].shape) for matrix_index in range(0, len(w_matrices))]
+
+
+def create_b_like_matrices(b_matrices):
+    return [np.zeros(b_matrices[matrix_index].shape) for matrix_index in range(0, len(b_matrices))]

@@ -91,7 +91,15 @@ class NeuralNetwork:
             # self.train_set = data[:split_index]
             # self.test_set = data[split_index:]
 
-    def fit(self, count_iterations, learning_rate, batch_size, show_acc=False, variable_lr_funct=none, momentum_friction=-1, l2_lambda=0.0, RMSprop_paramater = -1):
+    def fit(self, count_iterations, learning_rate, batch_size, show_acc=False, variable_lr_funct=none,
+            momentum_friction=-1, use_nesterov=False,
+            l1_lambda=0.0,
+            l2_lambda=0.0,
+            RMSprop_paramater=-1,
+            use_adadelta=False,
+            adam_beta1=-1, adam_beta2=-1,
+            use_adagrad=False):
+
         data = list(zip(*self.train_set))
         instances = list(data[0])
         actual_values = list(data[1])
@@ -107,9 +115,15 @@ class NeuralNetwork:
                                                                      learning_rate, batch_size,
                                                                      self.weight_matrices, self.bias_matrices,
                                                                      self.hidden_and_output,
-                                                                     momentum_friction,  # pentru momentum
+                                                                     momentum_friction, use_nesterov,  # pentru momentum
+                                                                     l1_lambda,  # pentru L1 reg
                                                                      l2_lambda,  # pentru L2 reg
-                                                                     RMSprop_paramater) #pentru RMS Prop
+                                                                     RMSprop_paramater,  # pentru RMS Prop
+                                                                     use_adadelta,
+                                                                     # pentru AdaDelta (necesita si RMSprop_parameter)
+                                                                     adam_beta1, adam_beta2,  # pentru Adam
+                                                                     use_adagrad # pentru Adagrad
+                                                                     )
             # print(self.weight_matrices)
             # print(self.bias_matrices)
 

@@ -4,6 +4,7 @@ import pandas as pd
 
 from kastor import kastor_framework as kt
 
+
 def construct_t(digit):
     t = [0] * 10
     t[digit] = 1
@@ -30,7 +31,6 @@ actual_values = []
 for index in range(0, len(actual_values_not_processed)):
     actual_values.append(construct_t(actual_values_not_processed[index]))
 
-
 print(data_set.shape)
 print(np.array(actual_values).shape)
 print("-------------------------------------")
@@ -44,11 +44,10 @@ print(data_train_target.shape)
 print(data_train_csv.shape)
 print(data_train_target[0])
 
-
 model = kt.NeuralNetwork()
 
 # model.add_hidden_layer(activation_funct=kt.act_func_sigmoid, activation_deriv=kt.deriv_sigmoid, neurons_count=50)
-model.add_hidden_layer(activation_funct=kt.act_funct_relu, activation_deriv=kt.deriv_relu, neurons_count=40)
+# model.add_hidden_layer(activation_funct=kt.act_funct_relu, activation_deriv=kt.deriv_relu, neurons_count=40)
 model.add_hidden_layer(activation_funct=kt.act_funct_relu, activation_deriv=kt.deriv_relu, neurons_count=25)
 model.add_last_layer(activation_funct=kt.act_funct_linear, cost_funct_deriv=kt.cost_cross_entropy, neurons_count=1)
 
@@ -56,4 +55,8 @@ model.init_components(input_layer_size=53, weight_init_name="normal", bias_init_
 
 model.load_dataset(data_set=list(zip(data_train_instances, data_train_target)), cross_valid_method="train_test_split")
 
-model.fit(count_iterations=10, learning_rate=0.01, batch_size=100, show_acc=True, momentum_friction=0.9, l2_lambda=0.1)
+model.fit(count_iterations=10, learning_rate=0.01, batch_size=100, show_acc=True,
+          momentum_friction=0.9, use_nesterov=True,
+          l1_lambda=0.1)
+
+#  |(t-y)|
