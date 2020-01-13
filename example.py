@@ -59,4 +59,4 @@ model.fit(count_iterations=10, learning_rate=0.01, batch_size=100, show_acc=True
           momentum_friction=0.9, use_nesterov=True,
           l1_lambda=0.1)
 
-#  |(t-y)|
+#  TRBUIE SA FAC SI PREDICT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -6,7 +6,8 @@ from kastor.cost_functions import *
 from kastor.init_methods import *
 from kastor.nn_test import test_network
 from kastor.nn_train import train_network
-from kastor.variable_learning_rate import none
+from kastor.normalization_methods import *
+from kastor.variable_learning_rate import *
 
 
 class NeuralNetwork:
@@ -64,20 +65,9 @@ class NeuralNetwork:
         init_weights(weight_init_name, self.weight_matrices, input_layer_size)
         init_bias(bias_init_name, self.bias_matrices, input_layer_size)
 
-    def normalize_data(self, data_set):
-        for data_index in range(0, len(data_set)):
-            data_min = np.min(data_set[data_index][0])
-            data_max = np.max(data_set[data_index][0])
-            data_diff = data_max - data_min
-            for data_elem_index in range(0, len(data_set[data_index][0])):
-                data_set[data_index][0][data_elem_index] = ((data_set[data_index][0][
-                                                                 data_elem_index] - data_min) / data_diff) - 1
-
-        return data_set
-
     def load_dataset(self, data_set, cross_valid_method):
 
-        data_set = self.normalize_data(data_set)
+        data_set = normalize_min_max(data_set)
 
         if cross_valid_method == "train_test_split":
             data = data_set
@@ -100,16 +90,18 @@ class NeuralNetwork:
             adam_beta1=-1, adam_beta2=-1,
             use_adagrad=False):
 
-        data = list(zip(*self.train_set))
-        instances = list(data[0])
-        actual_values = list(data[1])
-        print(actual_values[0])
-
         test_data = list(zip(*self.test_set))
         test_instances = list(test_data[0])
         test_actual_values = list(test_data[1])
 
         for it in tqdm(range(0, count_iterations), position=0):
+
+            shuffle(self.train_set)
+            data = list(zip(*self.train_set))
+            instances = list(data[0])
+            actual_values = list(data[1])
+            # print(actual_values[0])
+
             # Actual_values = target (valorile target)
             self.weight_matrices, self.bias_matrices = train_network(instances, actual_values,
                                                                      learning_rate, batch_size,
