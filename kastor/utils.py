@@ -15,6 +15,8 @@ def one_hot(output):
 
 
 def is_equal(a, b):
+    # print(a)
+    # print(b)
     for index in range(0, len(a)):
         if abs(a[index] - b[index]) > 1:
             return False

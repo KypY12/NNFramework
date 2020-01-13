@@ -100,10 +100,10 @@ def update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
         # A doua parte
         if is_adagrad:
             # Pentru weights
-            w_matrices[matrix_index] -= (lr * gradients_w[matrix_index]) / (np.sqrt(adagrad_w_sums) + 10 ** (-8))
+            w_matrices[matrix_index] -= (lr * gradients_w[matrix_index]) / (np.sqrt(adagrad_w_sums[matrix_index]) + 10 ** (-8))
 
             # Pentru bias
-            b_matrices[matrix_index] -= (lr * gradients_b[matrix_index]) / (np.sqrt(adagrad_b_sums) + 10 ** (-8))
+            b_matrices[matrix_index] -= (lr * gradients_b[matrix_index]) / (np.sqrt(adagrad_b_sums[matrix_index]) + 10 ** (-8))
             # 10**(-8) e epsilon in formula dar nu merita schimbat. E doar ca sa eviti impartirea la 0
 
         elif is_adam:
@@ -138,15 +138,16 @@ def update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
             w_value_for_lr = lr
             b_value_for_lr = lr
             if adadelta:
-                w_value_for_lr = prev_w_RMSprop[matrix_index]
-                b_value_for_lr = prev_b_RMSprop[matrix_index]
+                # Clip ca sa nu dea overflow (doar pentru adadelta)
+                w_value_for_lr = np.clip(prev_w_RMSprop[matrix_index], a_min=-10**(-10), a_max=10**(-10))
+                b_value_for_lr = np.clip(prev_b_RMSprop[matrix_index], a_min=-10**(-10), a_max=10**(-10))
 
             # Pentru weights
-            w_matrices[matrix_index] -= (w_value_for_lr * gradients_w[matrix_index]) / (
+            w_matrices[matrix_index] -= np.multiply(w_value_for_lr, gradients_w[matrix_index]) / (
                         np.sqrt(w_RMSprop[matrix_index]) + 10 ** (-8))
 
             # Pentru bias
-            b_matrices[matrix_index] -= (b_value_for_lr * gradients_b[matrix_index]) / (
+            b_matrices[matrix_index] -= np.multiply(b_value_for_lr, gradients_b[matrix_index]) / (
                         np.sqrt(b_RMSprop[matrix_index]) + 10 ** (-8))
 
             # 10**(-8) e epsilon in formula dar nu merita schimbat. E doar ca sa eviti impartirea la 0

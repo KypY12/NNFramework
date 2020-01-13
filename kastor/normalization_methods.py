@@ -53,7 +53,7 @@ def normalize_robust(data_set):
         data_q2 = np.quantile(data_set[data_index][0], 0.75)
         data_median = np.median(data_set[data_index][0])
 
-        data_diff = data_q2 - data_q1
+        data_diff = data_q2 - data_q1 + 1
 
         for data_elem_index in range(0, len(data_set[data_index][0])):
             data_set[data_index][0][data_elem_index] = \

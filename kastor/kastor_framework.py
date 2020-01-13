@@ -13,6 +13,7 @@ from kastor.variable_learning_rate import *
 class NeuralNetwork:
 
     def __init__(self):
+        print("\033[91m" + "Using kastor framework backend!" + "\033[0m")
         self.activation_functions_list = []
         # Derivatele
         self.functions_for_errors = []
@@ -65,9 +66,14 @@ class NeuralNetwork:
         init_weights(weight_init_name, self.weight_matrices, input_layer_size)
         init_bias(bias_init_name, self.bias_matrices, input_layer_size)
 
-    def load_dataset(self, data_set, cross_valid_method):
+    def load_dataset(self, data_set, cross_valid_method, data_norm_method):
 
-        data_set = normalize_min_max(data_set)
+        if data_norm_method == "z-score":
+            data_set = normalize_z_score(data_set)
+        elif data_norm_method == "min-max":
+            data_set = normalize_min_max(data_set)
+        elif data_norm_method == "median-quantile":
+            data_set = normalize_robust(data_set)
 
         if cross_valid_method == "train_test_split":
             data = data_set
@@ -90,16 +96,18 @@ class NeuralNetwork:
             adam_beta1=-1, adam_beta2=-1,
             use_adagrad=False):
 
+        shuffle(self.train_set)
+        data = list(zip(*self.train_set))
+        instances = list(data[0])
+        actual_values = list(data[1])
+
         test_data = list(zip(*self.test_set))
         test_instances = list(test_data[0])
         test_actual_values = list(test_data[1])
 
         for it in tqdm(range(0, count_iterations), position=0):
 
-            shuffle(self.train_set)
-            data = list(zip(*self.train_set))
-            instances = list(data[0])
-            actual_values = list(data[1])
+
             # print(actual_values[0])
 
             # Actual_values = target (valorile target)
@@ -114,7 +122,7 @@ class NeuralNetwork:
                                                                      use_adadelta,
                                                                      # pentru AdaDelta (necesita si RMSprop_parameter)
                                                                      adam_beta1, adam_beta2,  # pentru Adam
-                                                                     use_adagrad # pentru Adagrad
+                                                                     use_adagrad  # pentru Adagrad
                                                                      )
             # print(self.weight_matrices)
             # print(self.bias_matrices)

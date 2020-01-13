@@ -31,18 +31,18 @@ actual_values = []
 for index in range(0, len(actual_values_not_processed)):
     actual_values.append(construct_t(actual_values_not_processed[index]))
 
-print(data_set.shape)
-print(np.array(actual_values).shape)
-print("-------------------------------------")
+# print(data_set.shape)
+# print(np.array(actual_values).shape)
+# print("-------------------------------------")
 
 data_train_csv = np.array(pd.read_csv('dataset/Training/Features_Variant_1.csv'))
 data_train_instances = np.array([data_train_csv[index][0:-1] for index in range(0, len(data_train_csv))])
 data_train_target = np.array([[[data_train_csv[index][-1]]] for index in range(0, len(data_train_csv))])
 
-print(data_train_instances.shape)
-print(data_train_target.shape)
-print(data_train_csv.shape)
-print(data_train_target[0])
+# print(data_train_instances.shape)
+# print(data_train_target.shape)
+# print(data_train_csv.shape)
+# print(data_train_target[0])
 
 model = kt.NeuralNetwork()
 
@@ -53,10 +53,14 @@ model.add_last_layer(activation_funct=kt.act_funct_linear, cost_funct_deriv=kt.c
 
 model.init_components(input_layer_size=53, weight_init_name="normal", bias_init_name="normal")
 
-model.load_dataset(data_set=list(zip(data_train_instances, data_train_target)), cross_valid_method="train_test_split")
+model.load_dataset(data_set=list(zip(data_train_instances, data_train_target)),
+                   cross_valid_method="train_test_split",
+                   data_norm_method="median-quantile")
 
-model.fit(count_iterations=10, learning_rate=0.01, batch_size=100, show_acc=True,
-          momentum_friction=0.9, use_nesterov=True,
-          l1_lambda=0.1)
+model.fit(count_iterations=200, learning_rate=0.000005, batch_size=100, show_acc=True,
+          RMSprop_paramater=0.99, use_adadelta=True,
+          # adam_beta1=0.9, adam_beta2=0.99,
+          l2_lambda=0.0001)
 
-#  TRBUIE SA FAC SI PREDICT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+

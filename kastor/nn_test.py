@@ -23,6 +23,7 @@ def test_network(instances, actual_values, w_matrices, b_matrices, act_matrices,
 
         if is_equal(output, t):
             count_valid += 1
-        cost_values.append(np.sqrt(np.power((output-t), 2)))
+        # cost_values.append(np.sqrt(np.power((output-t), 2)))
+        cost_values.append(np.abs(t-output))
 
     return (count_valid * 100) / len(instances), np.mean(np.array(cost_values))
