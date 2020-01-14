@@ -95,7 +95,7 @@ class NeuralNetwork:
             use_adadelta=False,
             adam_beta1=-1, adam_beta2=-1,
             use_adagrad=False):
-
+        initial_lr = learning_rate
         shuffle(self.train_set)
         data = list(zip(*self.train_set))
         instances = list(data[0])
