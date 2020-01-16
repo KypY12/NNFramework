@@ -46,14 +46,7 @@ def back_propagation(act_matrices, w_matrices, actual_value):
         else:
             # weighturile sunt in numar de last_layer-2 deci current_layer+1 devine current_layer pentru ele
             error = error.transpose().dot(w_matrices[current_layer])
-            # print("Current layer: ", current_layer)
-            # print(error.transpose())
-            # print(act_matrices[current_layer][2](act_matrices[current_layer][0]))
             error = np.multiply(error.transpose(), act_matrices[current_layer][2](act_matrices[current_layer][0]))
-            # print(error.shape)
-            # print("value = ", act_matrices[current_layer][0])
-            # print("target = ", actual_value)
-            # print("Error : ", error)
 
         gradients_b += [error]
         gradients_w += [error.dot(act_matrices[current_layer - 1][0].transpose())]

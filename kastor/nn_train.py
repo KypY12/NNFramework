@@ -33,8 +33,6 @@ def train_network(instances, actual_values,
     elif RMSprop_parameter != -1:
         RMSprop_w = create_w_like_matrices(w_matrices)
         RMSprop_b = create_b_like_matrices(b_matrices)
-        # for matrice in w_matrices:
-        #     previous_gradients.append(np.zeros(matrice.shape))
 
     elif adam_beta1 != -1 and adam_beta2 != -1:
         adam_w_m = create_w_like_matrices(w_matrices)

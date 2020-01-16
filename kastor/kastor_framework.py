@@ -4,6 +4,7 @@ from kastor.creators import *
 from kastor.activation_functions import *
 from kastor.cost_functions import *
 from kastor.init_methods import *
+from kastor.nn_algorithms import feedforward
 from kastor.nn_test import test_network
 from kastor.nn_train import train_network
 from kastor.normalization_methods import *
@@ -13,7 +14,7 @@ from kastor.variable_learning_rate import *
 class NeuralNetwork:
 
     def __init__(self):
-        print("\033[91m" + "Using kastor framework backend!" + "\033[0m")
+        print("\033[91m" + "◘•◘•◘ Using kastor framework backend ◘•◘•◘" + "\033[0m")
         self.activation_functions_list = []
         # Derivatele
         self.functions_for_errors = []
@@ -82,10 +83,8 @@ class NeuralNetwork:
 
             # 70% train si 30% test
             split_index = int(data_len * 0.7)
-            self.train_set = data_set
-            self.test_set = data_set
-            # self.train_set = data[:split_index]
-            # self.test_set = data[split_index:]
+            self.train_set = data[:split_index]
+            self.test_set = data[split_index:]
 
     def fit(self, count_iterations, learning_rate, batch_size, show_acc=False, variable_lr_funct=none,
             momentum_friction=-1, use_nesterov=False,
@@ -96,19 +95,16 @@ class NeuralNetwork:
             adam_beta1=-1, adam_beta2=-1,
             use_adagrad=False):
 
-        shuffle(self.train_set)
-        data = list(zip(*self.train_set))
-        instances = list(data[0])
-        actual_values = list(data[1])
-
         test_data = list(zip(*self.test_set))
         test_instances = list(test_data[0])
         test_actual_values = list(test_data[1])
 
         for it in tqdm(range(0, count_iterations), position=0):
 
-
-            # print(actual_values[0])
+            shuffle(self.train_set)
+            data = list(zip(*self.train_set))
+            instances = list(data[0])
+            actual_values = list(data[1])
 
             # Actual_values = target (valorile target)
             self.weight_matrices, self.bias_matrices = train_network(instances, actual_values,
@@ -124,8 +120,6 @@ class NeuralNetwork:
                                                                      adam_beta1, adam_beta2,  # pentru Adam
                                                                      use_adagrad  # pentru Adagrad
                                                                      )
-            # print(self.weight_matrices)
-            # print(self.bias_matrices)
 
             # Aici in for se poate implementa o metoda pentru learning rate adaptiv
             # ex extrem de simplu: lr = lr / 2 (dar fixat neaparat)
@@ -139,3 +133,9 @@ class NeuralNetwork:
                 print("--- Epoch " + str(it) + " ---")
                 print("| Accuracy test : " + str(accuracy) + " |")
                 print("| Cost test : " + str(cost) + " |")
+
+    def predict(self, instance):
+        x = np.array([instance]).transpose()
+        local_act_matrices = feedforward(self.weight_matrices, self.bias_matrices, x, self.hidden_and_output)
+        output = local_act_matrices[-1][0]
+        return output

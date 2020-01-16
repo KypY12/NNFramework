@@ -55,12 +55,22 @@ model.init_components(input_layer_size=53, weight_init_name="normal", bias_init_
 
 model.load_dataset(data_set=list(zip(data_train_instances, data_train_target)),
                    cross_valid_method="train_test_split",
-                   data_norm_method="median-quantile")
+                   data_norm_method="z-score")
 
-model.fit(count_iterations=200, learning_rate=0.000005, batch_size=100, show_acc=True,
-          RMSprop_paramater=0.99, use_adadelta=True,
-          # adam_beta1=0.9, adam_beta2=0.99,
+model.fit(count_iterations=1000, learning_rate=0.00001, batch_size=64, show_acc=True,
+          # use_adagrad=True,
+          # RMSprop_paramater=0.99,
+          adam_beta1=0.9, adam_beta2=0.99,
           l2_lambda=0.0001)
 
+print(model.predict(data_train_instances[0]))
 
-
+#  TRBUIE SA FAC SI PREDICT
+#  testare ================================OKISH
+#  selectie automata subseturi
+#  crossvalidare
+#  functii cost
+#  modalitate de oprire (in functie de functia de cost, etc.)
+#  metode initializare weighturi
+#  eventual inca o normalizare (cea cu 10 la puterea j)
+#  save/load model

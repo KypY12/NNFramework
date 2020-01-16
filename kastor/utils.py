@@ -14,6 +14,7 @@ def one_hot(output):
     return result
 
 
+# Pentru regresie
 def is_equal(a, b):
     # print(a)
     # print(b)
@@ -23,6 +24,7 @@ def is_equal(a, b):
     return True
 
 
+# Pentru clasificare
 # def is_equal(a, b):
 #     for index in range(0, len(a)):
 #         if a[index] != b[index]:

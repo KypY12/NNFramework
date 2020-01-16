@@ -119,11 +119,6 @@ def update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
 
             b_matrices[matrix_index] -= (lr * b_m_inter) / (np.sqrt(b_v_inter) + 10 ** (-8))
 
-            # current_momentum[matrix_index] = current_momentum[matrix_index] / (1 - friction ** iteration_count)
-            # current_RMSprop[matrix_index] = current_RMSprop[matrix_index] / (1 - RMSprop_parameter ** iteration_count)
-            # w_matrices[matrix_index] -= -lr * current_momentum[matrix_index] / (
-            #         current_RMSprop[matrix_index] ** (1 / 2) + 10 ** (-8))
-            # 10**(-8) e epsilon in formula dar nu merita schimbat. E doar ca sa eviti impartirea la 0
 
         elif is_momentum:
             # Pentru weights
@@ -158,9 +153,6 @@ def update_w_b(w_matrices, b_matrices, gradients_w, gradients_b, lr,
 
             # Pentru bias
             b_matrices[matrix_index] -= (lr * gradients_b[matrix_index])
-
-    # for matrix_index in range(0, len(b_matrices)):
-    #     b_matrices[matrix_index] -= (lr * gradients_b[matrix_index])
 
     return w_matrices, b_matrices, current_momentum, \
            w_RMSprop, b_RMSprop, \

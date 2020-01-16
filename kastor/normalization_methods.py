@@ -13,28 +13,6 @@ def normalize_min_max(data_set):
     return data_set
 
 
-# def normalize_min_max(data_set):
-#     global_min, global_max = 0
-#
-#     for data_index in range(0, len(data_set)):
-#         data_min = np.min(data_set[data_index][0])
-#         data_max = np.max(data_set[data_index][0])
-#         if data_min < global_min:
-#             global_min = data_min
-#
-#         if data_max > global_max:
-#             global_max = data_max
-#
-#     data_diff = global_max - global_min
-#
-#     for data_index in range(0, len(data_set)):
-#         for data_elem_index in range(0, len(data_set[data_index][0])):
-#             data_set[data_index][0][data_elem_index] = \
-#                 (data_set[data_index][0][data_elem_index] - global_min) / data_diff
-#
-#     return data_set
-
-
 def normalize_z_score(data_set):
     for data_index in range(0, len(data_set)):
         data_mean = np.mean(data_set[data_index][0])
